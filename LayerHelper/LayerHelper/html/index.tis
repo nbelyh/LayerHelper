@@ -1,0 +1,24 @@
+namespace Data
+{
+    var items = [];
+	var layerName = "";
+	var isAddLayerEnabled = false;
+
+    function setItems(v) {
+        if (items.length !== v.length)
+            items = v;
+
+        for (var i = 0; i < items.length; ++i) {
+            items[i].name = v[i].name;
+            items[i].visible = v[i].visible;
+            items[i].selected = v[i].selected;
+            items[i].index = v[i].index;
+        }
+    }
+
+	function addLayer() {
+		view.AddLayer(layerName);
+		layerName = "";
+	}
+
+}
