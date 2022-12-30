@@ -9,7 +9,7 @@
     <RootNamespace>LayerHelper</RootNamespace>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>LayerHelper</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
   </PropertyGroup>
