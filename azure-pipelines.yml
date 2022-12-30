@@ -78,14 +78,6 @@ stages:
         platform: 'x86'
         configuration: 'Release'
 
-    - task: VSBuild@1
-      displayName: Build solution (x64)
-      inputs:
-        solution: '$(solution)'
-        msbuildArgs: '/p:RunWixToolsOutOfProc=true'
-        platform: 'x64'
-        configuration: 'Release'
-
     - task: PowerShell@2
       displayName: Sign files
       inputs:
@@ -103,23 +95,10 @@ stages:
             &$signtool sign /n "Nikolay Belykh" /v /fd sha256 /tr $timestampUrl /td sha256 /d "Visio LayerHelper Addin" /du "https://unmanagedvisio.com" $file.FullName
           }
 
-          ForEach ($file in (Get-ChildItem "Setup\bin\Release\x64\*.msi"))
-          {
-            Write-Host $file.FullName
-            &$signtool sign /n "Nikolay Belykh" /v /fd sha256 /tr $timestampUrl /td sha256 /d "Visio LayerHelper Addin" /du "https://unmanagedvisio.com" $file.FullName
-          }
-
     - task: PublishBuildArtifacts@1
       displayName: Publish artifacts (x86)
       inputs:
         PathtoPublish: 'Setup\bin\Release\x86'
-        ArtifactName: 'setup'
-        publishLocation: 'Container'
-
-    - task: PublishBuildArtifacts@1
-      displayName: Publish artifacts (x64)
-      inputs:
-        PathtoPublish: 'Setup\bin\Release\x64'
         ArtifactName: 'setup'
         publishLocation: 'Container'
 

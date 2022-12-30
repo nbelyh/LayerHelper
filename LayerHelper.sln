@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerHelper", "LayerHelper\LayerHelper.csproj", "{253D69A7-D206-48C1-A320-1841CFED9F18}"
 EndProject
@@ -26,10 +26,14 @@ Global
 		{EC2B0C37-7574-46BA-BF26-CBBC9B70ED7B}.Debug|x64.ActiveCfg = Debug|x86
 		{EC2B0C37-7574-46BA-BF26-CBBC9B70ED7B}.Debug|x86.ActiveCfg = Debug|x86
 		{EC2B0C37-7574-46BA-BF26-CBBC9B70ED7B}.Release|x64.ActiveCfg = Release|x86
+		{EC2B0C37-7574-46BA-BF26-CBBC9B70ED7B}.Release|x64.Build.0 = Release|x86
 		{EC2B0C37-7574-46BA-BF26-CBBC9B70ED7B}.Release|x86.ActiveCfg = Release|x86
 		{EC2B0C37-7574-46BA-BF26-CBBC9B70ED7B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {816C1EA4-AA11-49DC-89F5-E4DBA411A34B}
 	EndGlobalSection
 EndGlobal
