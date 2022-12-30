@@ -17,10 +17,6 @@ variables:
 - group: sectigo
 - name: solution 
   value: '**/*.sln'
-- name: buildPlatform
-  value: 'Any CPU'
-- name: buildConfiguration
-  value: 'Release'
 - name: Version
   value: '1.0'
 
@@ -75,12 +71,20 @@ stages:
     - task: NuGetCommand@2
 
     - task: VSBuild@1
-      displayName: Build solution
+      displayName: Build solution (x86)
       inputs:
         solution: '$(solution)'
         msbuildArgs: '/p:RunWixToolsOutOfProc=true'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
+        platform: 'x86'
+        configuration: 'Release'
+
+    - task: VSBuild@1
+      displayName: Build solution (x64)
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:RunWixToolsOutOfProc=true'
+        platform: 'x64'
+        configuration: 'Release'
 
     - task: PowerShell@2
       displayName: Sign files
@@ -93,22 +97,29 @@ stages:
           $signtool = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
           Write-Host "SIGNTOOL " $signtool
           
-          ForEach ($file in (Get-ChildItem "Setup\bin\Release\*.msi"))
+          ForEach ($file in (Get-ChildItem "Setup\bin\Release\x86\*.msi"))
           {
             Write-Host $file.FullName
             &$signtool sign /n "Nikolay Belykh" /v /fd sha256 /tr $timestampUrl /td sha256 /d "Visio LayerHelper Addin" /du "https://unmanagedvisio.com" $file.FullName
           }
 
-    - task: VSTest@2
-      displayName: Run  tests
-      inputs:
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
+          ForEach ($file in (Get-ChildItem "Setup\bin\Release\x64\*.msi"))
+          {
+            Write-Host $file.FullName
+            &$signtool sign /n "Nikolay Belykh" /v /fd sha256 /tr $timestampUrl /td sha256 /d "Visio LayerHelper Addin" /du "https://unmanagedvisio.com" $file.FullName
+          }
 
     - task: PublishBuildArtifacts@1
-      displayName: Publish artifacts
+      displayName: Publish artifacts (x86)
       inputs:
-        PathtoPublish: 'Setup\bin\Release'
+        PathtoPublish: 'Setup\bin\Release\x86'
+        ArtifactName: 'setup'
+        publishLocation: 'Container'
+
+    - task: PublishBuildArtifacts@1
+      displayName: Publish artifacts (x64)
+      inputs:
+        PathtoPublish: 'Setup\bin\Release\x64'
         ArtifactName: 'setup'
         publishLocation: 'Container'
 
