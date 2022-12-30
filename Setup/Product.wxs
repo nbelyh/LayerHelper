@@ -12,7 +12,7 @@
   <Product Id="$(var.ProductCode)" Name="LayerHelper" Language="1033" Version="$(var.Version)" Manufacturer="Unmanaged Visio" UpgradeCode="$(var.UpgradeCode)">
     <Package InstallerVersion="200" Compressed="yes" />
 
-    
+
     <!-- check taht .NET 4 (client profile at least) is installed -->
     <PropertyRef Id="NETFRAMEWORK40CLIENT" />
     <PropertyRef Id="NETFRAMEWORK40FULL" />
@@ -21,7 +21,7 @@
     <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again.">
       <![CDATA[Installed OR NETFRAMEWORK40CLIENT OR NETFRAMEWORK40 OR NETFRAMEWORK45]]>
     </Condition>
-    
+
     <!-- Visio 2007 VSTO addin support - remove this block if Visio 2007 support is not required -->
     <Property Id="VISIO2007">
       <RegistrySearch Id="Visio2007_Installed" Root="HKLM" Key="Software\Microsoft\Office\12.0\Visio\InstallRoot" Name="Path" Type="raw" />
@@ -36,18 +36,18 @@
     <Property Id="VSTOR40">
       <RegistrySearch Id="VSTOR_Installed" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO Runtime Setup\v4R" Name="VSTORFeature_CLR40" Type="raw" />
     </Property>
-    
+
     <Condition Message="This addin requires the VSTO 4.0 Runtime to run on Visio 2007. Please install the VSTO runtime then run this installer again.">
       <![CDATA[Installed OR (VSTOR40 OR NOT VISIO2007)]]>
     </Condition>
-    
+
     <Condition Message="This addin requires Visio Service Pack 3 to be installed to run on Visio 2007. Please install the Service Pack 3 then run this installer again.">
       <![CDATA[Installed OR (VISIO2007SP3 OR NOT VISIO2007)]]>
     </Condition>
-	  <!-- Visio 2007 support -->
+    <!-- Visio 2007 support -->
     <!-- override default license -->
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
-    
+
     <!-- allow major upgrades -->
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
@@ -58,11 +58,12 @@
 
     <Feature Id="ProductFeature" Title="Setup" Level="1">
       <ComponentGroupRef Id="AddinFiles"/>
-      </Feature>
+      <ComponentGroupRef Id="HtmlFiles"/>
+    </Feature>
 
     <!-- UI settings -->
     <UI>
-      
+
       <UIRef Id="WixUI_Advanced"/>
       <Property Id="ALLUSERS" Value="2" />
       <Property Id="ApplicationFolderName" Value="LayerHelper" />
@@ -71,44 +72,74 @@
       <Publish Dialog="InstallScopeDlg" Control="Next" Property="MSIINSTALLPERUSER" Value="1" >WixAppFolder = "WixPerUserFolder"</Publish>
       <Publish Dialog="InstallScopeDlg" Control="Next" Property="MSIINSTALLPERUSER" Value="{}" >WixAppFolder = "WixPerMachineFolder"</Publish>
     </UI>
-    
+
   </Product>
 
   <!-- Define default directory structure -->
-  
+
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="APPLICATIONFOLDER" Name="LayerHelper">
-          
+          <Directory Id="HTMLFILES" Name="html">
+            
+          </Directory>
         </Directory>
       </Directory>
     </Directory>
-    
-    
-    <!-- Addin files to be included in setup -->
-    <ComponentGroup Id="AddinFiles" Directory="APPLICATIONFOLDER">
-      
+
+
+    <ComponentGroup Id="HtmlFiles" Directory="HTMLFILES" Source="$(var.LayerHelper.TargetDir)html">
+
+      <Component>
+        <File Name="index.html" ></File>
+      </Component>
+      <Component>
+        <File Name="index.tis" ></File>
+      </Component>
+      <Component>
+        <File Name="plus.css" ></File>
+      </Component>
+      <Component>
+        <File Name="plus.tis" ></File>
+      </Component>
+      <Component>
+        <File Name="toggler.css" ></File>
+      </Component>
+
+    </ComponentGroup>
+
+      <!-- Addin files to be included in setup -->
+    <ComponentGroup Id="AddinFiles" Directory="APPLICATIONFOLDER" Source="$(var.LayerHelper.TargetDir)">
+
       <!-- Add the addin dll to the setup. Reference using project referencing -->
       <Component>
-        <File Source="$(var.LayerHelper.TargetPath)" >
-          
-        </File>
+        <File Name="$(var.LayerHelper.TargetName).dll" ></File>
       </Component>
-      
+
+      <Component>
+        <File Name="Newtonsoft.Json.dll" ></File>
+      </Component>
+      <Component>
+        <File Name="sciter.dll" ></File>
+      </Component>
+      <Component>
+        <File Name="SciterSharpWindows.dll" ></File>
+      </Component>
+
       <!-- VSTO framework file -->
       <Component>
-        <File Source="$(var.LayerHelper.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.dll"></File>
+        <File Name="Microsoft.Office.Tools.Common.v4.0.Utilities.dll"></File>
       </Component>
 
       <!-- Add the addin manifest file -->
       <Component>
-        <File Source="$(var.LayerHelper.TargetPath).manifest"></File>
+        <File Name="$(var.LayerHelper.TargetName).dll.manifest"></File>
       </Component>
-      
+
       <!--  The .vsto file is addin discovery file. Set up registry to point to this file using |vstolocal -->
       <Component>
-        <File Source="$(var.LayerHelper.TargetDir)$(var.LayerHelper.TargetName).vsto">
+        <File Name="$(var.LayerHelper.TargetName).vsto">
           <visio:PublishAddin />
         </File>
       </Component>
@@ -121,8 +152,8 @@
         </RegistryKey>
       </Component>
       <!-- Visio 2007 support -->
-      
+
     </ComponentGroup>
-    
+
   </Fragment>
 </Wix>
