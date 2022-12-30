@@ -1,82 +1,82 @@
 ﻿<!-- OmniView:off -->
 <html>
 <head>
-    <style>
-        @import url(toggler.css);
-        @import url(plus.css);
+  <style>
+    @import url(toggler.css);
+    @import url(plus.css);
 
-        body {
-            font: system;
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
+    body {
+      font: system;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
 
         button.switch { flow: stack; }
         button.switch > caption { display: block; visibility: hidden; }
         button.switch:checked > caption.true { visibility: visible; }
         button.switch:not(:checked) > caption.false { visibility: visible; }
 
-        td, th {
-            padding: 0.3em;
-        }
+    td, th {
+      padding: 0.3em;
+    }
 
-        table {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+    table {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-        .selected {
-            background-color: #eeeeff;
-        }
+    .selected {
+      background-color: #eeeeff;
+    }
 
-        .bold {
-            font-weight: bold;
-        }
+    .bold {
+      font-weight: bold;
+    }
 
-        img {
-            fill: #fee;
-            stroke: none;
-            border: 0 dashed #ccc;
-            width: 1.2em;
-            margin-left: 1em;
-        }
+    img {
+      fill: #fee;
+      stroke: none;
+      border: 0 dashed #ccc;
+      width: 1.2em;
+      margin-left: 1em;
+    }
 
-            img:hover {
-                fill: #ff0000;
-                cursor: pointer;
-            }
-    </style>
+      img:hover {
+        fill: #ff0000;
+        cursor: pointer;
+      }
+  </style>
 
-    <script type="text/tiscript" src="index.tis"></script>
+  <script type="text/tiscript" src="index.tis"></script>
 
 </head>
 <body model="Data">
-    <div style="position: fixed; top: 0; padding: 5px; flow: horizontal; height: 4em">
-        <input|text(layerName) style="display: inline-block; margin: 5px" />
-        <button type="submit" @enabled="layerName" click="addLayer()" style="border-radius: 5px"> Add </button>
-    </div>
-    <table style="margin-top: 4em">
-        <tbody each="item in items">
-            <tr class="{{selected:item.visible}}">
-                <td>
-                    <button|toggler(item.visible) click="view.SetLayerVisible(item)">
-                        <caption .true>ON</caption>
-                        <caption .false>OFF</caption>
-                        </button>
-                </td>
-                <td class="{{bold:item.selected}}" style="width: 100%%">
-                    <output(item.name) /> (<output(item.count) />)
-                </td>
-                <td>
-                    <input|checkbox(item.selected) click="view.SetLayerSelected(item)" />
-                </td>
-                <td>
-                    <img src="path:M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z" click="view.RemoveLayer(item)" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <div style="position: fixed; top: 0; padding: 5px; flow: horizontal; height: 4em">
+    <input|text(layerName) change="onInputChange()" style="display: inline-block; margin: 5px" />
+    <button type="submit" @enabled="layerName" click="addLayer()" style="border-radius: 5px">Add</button>
+  </div>
+  <table style="margin-top: 4em">
+    <tbody each="item in items">
+      <tr class="{{selected:item.visible}}">
+        <td>
+          <button|toggler(item.visible) click="view.SetLayerVisible(item)">
+            <caption .true>ON</caption>
+            <caption .false>OFF</caption>
+          </button>
+        </td>
+        <td class="{{bold:item.selected}}" style="width: 100%%">
+          <output(item.name) /> (<output(item.count) />)
+        </td>
+        <td>
+          <input|checkbox(item.selected) click="view.SetLayerSelected(item)" />
+        </td>
+        <td>
+          <img src="path:M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z" click="view.RemoveLayer(item)" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>

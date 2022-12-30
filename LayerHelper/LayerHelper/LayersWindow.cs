@@ -5,6 +5,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using Visio = Microsoft.Office.Interop.Visio;
 using SciterSharp;
+using System.Windows.Forms;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace LayerHelper
 {
@@ -75,11 +77,14 @@ namespace LayerHelper
         {
             var page = _layersWindow.VisioWindow.PageAsObj;
 
-            var layer = page.Layers[item.name];
+            if (MessageBox.Show($"Remove Layer \"{item.name}\"?\n\nThis will also remove all shapes locatd on thsi layer ({item.count})", "LayerHelper", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+            {
+                var layer = page.Layers[item.name];
 
-            layer.Delete(0);
+                layer.Delete(0);
 
-            _layersWindow.UpdatePanel();
+                _layersWindow.UpdatePanel();
+            }
         }
 
         private void OnSelectedClicked(Item item)

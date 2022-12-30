@@ -6,17 +6,6 @@ namespace LayerHelper
 {
     public partial class ThisAddIn
     {
-
-        /// <summary>
-        /// A simple command
-        /// </summary>
-        public void Command1()
-        {
-            MessageBox.Show(
-                "Hello from command 1!",
-                "LayerHelper");
-        }
-
         public void TogglePanel()
         {
             _panelManager.TogglePanel(Application.ActiveWindow);

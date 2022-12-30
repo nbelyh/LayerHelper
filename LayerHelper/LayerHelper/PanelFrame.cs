@@ -109,8 +109,8 @@ namespace LayerHelper
                         VisWinTypes.visAnchorBarAddon,
                         0,
                         0,
-                        300,
-                        300,
+                        400,
+                        400,
                         AddonWindowMergeId,
                         string.Empty,
                         0);

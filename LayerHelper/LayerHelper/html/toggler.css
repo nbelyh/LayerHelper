@@ -23,7 +23,7 @@
 
   :root:checked { foreground-position:0% 50%;  }
   
-  :root > caption { line-height:1.4em; padding:0 0.6em; height:1.6em }
+  :root > caption { line-height:1.4em; padding:0 0.4em; height:1.4em }
   
   :root > caption.true { padding-right:2em; background-color:highlight; color: highlighttext; }
   :root > caption.false { padding-left:2em; background-color:threedface; }
@@ -38,7 +38,7 @@
   :root::after /* the knob */
   { 
     display:block; 
-    size:1.6em; 
+    size:1.4em; 
     margin: 1* 1* 1* 0*; 
     background-image:url(stock:disk);
     background-size:1.1em;
