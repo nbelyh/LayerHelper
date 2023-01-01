@@ -121,7 +121,10 @@
         <File Name="Newtonsoft.Json.dll" ></File>
       </Component>
       <Component>
-        <File Name="sciter.dll" ></File>
+        <File Name="sciter32.dll" ></File>
+      </Component>
+      <Component>
+        <File Name="sciter64.dll" ></File>
       </Component>
       <Component>
         <File Name="SciterSharpWindows.dll" ></File>

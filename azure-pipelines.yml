@@ -103,39 +103,43 @@ stages:
         publishLocation: 'Container'
 
 - stage: Deploy
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   pool:
     vmImage: 'windows-latest'
-
   jobs:
-  - job: Deploy
-    steps:
-    - task: DownloadBuildArtifacts@0
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'setup'
-        downloadPath: '$(System.ArtifactsDirectory)'
+  - deployment: GitHubRelease
+    environment: 'github'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'setup'
+              downloadPath: '$(System.ArtifactsDirectory)'
 
-    - task: PowerShell@2
-      inputs:
-        targetType: 'inline'
-        script: |
-          $versionFull = "$(Build.BuildNumber)"
-          $version = $versionFull|%{[System.Version]$_}
-          $versionShort = "$($version.Major).$($version.Minor).$($version.Build)"
-          Write-Host "##vso[task.setvariable variable=versionShort]$($versionShort)"
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                $versionFull = "$(Build.BuildNumber)"
+                $version = $versionFull|%{[System.Version]$_}
+                $versionShort = "$($version.Major).$($version.Minor)"
+                Write-Host "##vso[task.setvariable variable=versionShort]$($versionShort)"
 
-    - task: GitHubRelease@1
-      inputs:
-        gitHubConnection: 'github.com_nbelyh'
-        repositoryName: '$(Build.Repository.Name)'
-        action: 'edit'
-        target: '$(Build.SourceVersion)'
-        tag: '$(versionShort)'
-        title: '$(Build.BuildNumber)'
-        releaseNotesSource: 'inline'
-        releaseNotesInline: 'TBD'
-        assets: '$(System.ArtifactsDirectory)\setup\*'
-        isPreRelease: true
-        changeLogCompareToRelease: 'lastFullRelease'
-        changeLogType: 'commitBased'
+          - task: GitHubRelease@1
+            inputs:
+              gitHubConnection: 'github.com_nbelyh'
+              repositoryName: '$(Build.Repository.Name)'
+              action: 'edit'
+              target: '$(Build.SourceVersion)'
+              tag: '$(versionShort)'
+              title: '$(Build.BuildNumber)'
+              releaseNotesSource: 'inline'
+              releaseNotesInline: 'TBD'
+              assets: '$(System.ArtifactsDirectory)\setup\*'
+              isPreRelease: true
+              changeLogCompareToRelease: 'lastFullRelease'
+              changeLogType: 'commitBased'
