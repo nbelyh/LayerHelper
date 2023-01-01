@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Visio = Microsoft.Office.Interop.Visio;
 
 namespace LayerHelper
 {
@@ -28,13 +27,13 @@ namespace LayerHelper
             Application.OnKeystrokeMessageForAddon -= _shortcutManager.OnKeystrokeMessageForAddon;
         }
 
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InternalStartup()
         {
+            SciterSharp.Interop.SciterX.Use3264DLLNaming = true;
             Startup += ThisAddIn_Startup;
             Shutdown += ThisAddIn_Shutdown;
         }
